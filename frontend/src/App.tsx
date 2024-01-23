@@ -2,9 +2,6 @@ import Layout from '@/components/layout/Layout';
 import '@/index.scss';
 import { Suspense, lazy } from 'react';
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom';
-// import Test from
-
-// import { io } from 'socket.io-client'
 
 // const Home = lazy(() => import('@/pages/Home'))
 const Single = lazy(() => import('@/pages/Single'))

@@ -6,6 +6,13 @@ import http from 'http';
 import https from 'https';
 import routes from '@/routes';
 import { join } from 'path'
+import { UsertModel } from '@/models/userModel';
+
+declare global {
+  namespace Express {
+    interface User extends UsertModel { }
+  }
+}
 
 dotenv.config()
 
@@ -26,10 +33,13 @@ app.use("/" + process.env.API_PREFIX, routes);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(join(__dirname, '/public')));
-  app.get('/*', function (req, res) {
-    res.sendFile(join(__dirname, '/public/index.html'));
-  });
+
 }
+
+app.use(express.static(join(__dirname, '../public')))
+app.get('/*', function (req, res) {
+  res.sendFile(join(__dirname, '../public/index.html'));
+});
 
 export const httpServer = http.createServer(app)
 

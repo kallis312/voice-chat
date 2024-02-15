@@ -1,5 +1,7 @@
 import socket from '@Socket/index'
+
 export let io: any = null
+
 export type SocketUser = {
   _id: string,
   socket: string

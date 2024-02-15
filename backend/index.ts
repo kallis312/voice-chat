@@ -1,8 +1,5 @@
-import connectDB from '@Conf/mongoose'
 import { httpsServer } from '@Conf/express'
 import socket from '@Conf/socket'
-
-connectDB()
 
 socket(httpsServer)
 

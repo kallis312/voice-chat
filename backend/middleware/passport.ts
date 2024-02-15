@@ -1,8 +1,6 @@
-import { model } from "mongoose";
-import passport from "passport";
-import { ExtractJwt, Strategy } from "passport-jwt";
-
-const UserModel = model('User')
+import userModel, { UsertModel } from "@/models/userModel";
+import passport from "passport"
+import { ExtractJwt, Strategy } from "passport-jwt"
 
 const jwtOptions = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('JWT'),
@@ -10,7 +8,8 @@ const jwtOptions = {
 };
 
 const jwtLogin = new Strategy(jwtOptions, async (payload, done) => {
-  const existUser = await UserModel.findById(payload._id, 'email ID')
+  const existUser = await userModel.findOne({ where: { id: payload.id } })
+  console.log(existUser)
   if (existUser)
     done(null, existUser)
   else

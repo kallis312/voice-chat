@@ -1,8 +1,14 @@
 import { createContext } from 'react';
 import { io, Socket } from "socket.io-client";
 
-export const socket: Socket = io('https://192.168.143.55:8080', {
+const socketUrl = import.meta.env.VITE_SEVER_URL
+
+console.log(socketUrl)
+
+export const socket = io(socketUrl, {
   transports: ['websocket']
 });
 
 export const SocketContext = createContext<Socket>(socket);
+
+export default socket

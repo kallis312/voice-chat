@@ -6,10 +6,9 @@ const maximum = process.env.MAXIMUM || 4;
 export const login = (socket: any, token: string) => {
   const jwt = token.split(' ')[1]
   const user: any = decode(jwt)
-  if (!io.users[user._id]?.some((_: string) => _ === socket.id))
-    io.users[user._id] = [...(io.users[user._id] || []), socket.id]
-  io.socketToUser[socket.id] = user._id
-  // users.push({ _id: jwt_decode._id, socket: socket.id })
+  if (!io.users[user.id]?.some((_: string) => _ === socket.id))
+    io.users[user.id] = [...(io.users[user.id] || []), socket.id]
+  io.socketToUser[socket.id] = user.id
   console.log('login -> ', io.users)
 }
 

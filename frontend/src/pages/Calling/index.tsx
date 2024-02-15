@@ -114,7 +114,6 @@ const Calling: FC = () => {
     console.log(userInfo)
     if (userSocketId)
       socket.emit('c2s-leave', { to: userSocketId })
-    // console.log(connect)
     if (connect === 0)
       socket.emit('c2s-cancel', { toPhone: phone })
     socket.off('s2c-receive')

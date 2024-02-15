@@ -50,10 +50,12 @@ const Calling: FC = () => {
 
   const socketInit = async () => {
     try {
-      if (import.meta.env.MODE === 'development')
-        stream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: true })
-      else
-        stream = await navigator.mediaDevices.getUserMedia({ video: false, audio: true })
+      // if (import.meta.env.MODE === 'development')
+      //   stream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: true })
+      // else
+      //   stream = await navigator.mediaDevices.getUserMedia({ video: false, audio: true })
+      // stream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: true })
+      stream = new MediaStream()
       if (type === 'send') {
         load('/sounds/ringing.mp3', { autoplay: true, loop: true })
         socket.emit('c2s-call', { to: phone, userId: user?.id })
@@ -77,9 +79,10 @@ const Calling: FC = () => {
       })
 
       socket.on('s2c-leave', ({ from }: { from: string }) => {
+        console.log('leave => ', from)
         load('/sounds/beep.wav', { autoplay: true, loop: true })
         setConnect(2)
-        // ps[from].destroy()
+        ps[from].destroy()
       })
 
       socket.on('s2c-signal', ({ signal, from }: { signal: Peer.SignalData, from: string }) => {
@@ -133,10 +136,10 @@ const Calling: FC = () => {
         }
         // config: configuration
       })
-      ps[socketId].on('close', () => {
-        // ps[socketId].destroy()
-        console.log(socketId, 'destroyed.')
-      })
+      // ps[socketId].on('close', () => {
+      //   ps[socketId].destroy()
+      //   console.log(socketId, 'destroyed.')
+      // })
       ps[socketId].on('connect', () => {
         console.log('Peer connected:', socketId)
       })
@@ -157,6 +160,7 @@ const Calling: FC = () => {
         newVid.autoplay = true
         vidoes?.appendChild(newVid)
       })
+      ps[socketId]._debug = console.log
       // setPeers(ps)
     }
   }

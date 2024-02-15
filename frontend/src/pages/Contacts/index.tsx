@@ -51,22 +51,26 @@ const Contacts: FC = (): ReactNode => {
     try {
       if (contactSupported && type) {
         const contacts = await (navigator as unknown as Navigator).contacts.select(['name', 'email', 'tel'], { multiple: true })
+        console.log(contacts)
         const temp: {
           phone: string | null
           email: string | null
           name: string | null
         }[] = []
-        Swal.fire({
-          text: JSON.stringify(contacts)
-        })
         contacts.forEach(_contact => {
           if (_contact.tel?.length && _contact.tel[0])
             temp.push({
               email: _contact.email.length ? _contact.email[0] : null,
-              name: _contact.name.length ? _contact.name[0] : null,
+              name: _contact.name.length ? _contact.name[0] : _contact.tel[0],
               phone: _contact.tel[0]
             })
         })
+        // Swal.fire({
+        //   text: JSON.stringify(contacts) + " : " + JSON.stringify({ contacts: temp, type: type })
+        // })
+        // Swal.fire({
+        //   text: JSON.stringify(contacts)
+        // })
         if (temp.length) {
           await axios.post('/contacts', { contacts: temp, type: type })
           loadContact(type)
@@ -75,7 +79,7 @@ const Contacts: FC = (): ReactNode => {
     } catch (err) {
       Swal.fire({
         icon: 'error',
-        text: err instanceof Error ? err.message : 'Unknown Error.',
+        // text: err instanceof Error ? err.message : 'Unknown Error.',
         confirmButtonText: 'はい'
       })
     }
